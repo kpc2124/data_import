@@ -9,6 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(readxl)
 ```
 
 ## Load in Dataset
@@ -17,8 +18,45 @@ library(tidyverse)
 ## reads in a dataset (absolute (NO) vs relative (YES) paths)
 
 litters_data = read_csv(file = "./data/FAS_litters.csv")
-litters_data = janitor::clean_names(litters_data)
+litters_data = janitor::clean_names(litters_data) ## rewriting dataset
 
-## rewriting dataset
+pups_data = read_csv(file = "./data/FAS_pups.csv")
+pups_data = janitor::clean_names(pups_data)
+## pups_data_abs = read_csv(file = "C:/Users/kchau/Documents/Columbia Mailman/Columbia Mailman - Fall 2019/Data Science/Class Examples/data_import/data/FAS_pups.csv")
+
+## litters_data = read_csv(file = "./data/FAS_litters.csv",
+##   skip = 10, col_names = FALSE)
+```
+
+## Play with column parsing (how variables are read in)
+
+```{r}
+litters_data = read_csv(
+  file = "./data/FAS_litters.csv",
+  col_types = cols(
+    Group = col_character(),
+    `Litter Number` = col_character(), ## in back ticks, bc varname includes a space,   needs to be recognized as variable
+    `GD0 weight` = col_double(),
+    `GD18 weight` = col_double(),
+    `GD of Birth` = col_integer(),
+    `Pups born alive` = col_integer(),
+    `Pups dead @ birth` = col_integer(),
+    `Pups survive` = col_integer()
+  )
+)
+tail(litters_data)
+```
+
+## Read in an excel file
+
+```{r}
+mlb11_data = read_excel(path = "./data/mlb11.xlsx")
+
+```
+
+## Read in SAS
+
+```{r}
+pulse_data = haven::read_sas("./data/public_pulse_data.sas7bdat")
 ```
 
