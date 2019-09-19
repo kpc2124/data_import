@@ -61,5 +61,46 @@ mlb11_data = read_excel(path = "./data/mlb11.xlsx")
 pulse_data = haven::read_sas("./data/public_pulse_data.sas7bdat")
 ```
 
+## Selecting!
+
+```{r}
+select(litters_data, group, litter_number) ## (dataframe, col1, col2, etc.)
+
+select(litters_data, litter_number, gd0_weight, starts_with("pups"))
+
+select(litters_data, litter_number, group, gd0_weight) ## listed order matters
+
+select(litters_data, litter_number, group, everything())
+
+select(litters_data, -group) ## "-" remove a column
+
+select(litters_data, litter_number, gd0_weight:pups_born_alive) ## ":" keep everything bw these two variables
+
+select(litters_data, GROUP = group, litter_number) ## renamed "group"
+
+rename(litters_data, GROUP = group) ## just a rename function
+```
+
+## Filtering!
+
+```{r}
+filter(litters_data, group == "Con7") ## "==" differs between an assignment and a logical question, keep group when equal to Con7
+
+filter(litters_data, gd_of_birth == 20) ## numeric variables
+
+filter(litters_data, pups_born_alive < 6, group == "Con7")
+
+filter(litters_data, group == "Con7" | group == "Mod8") ## "or" logical
+filter(litters_data, group %in% c("Con7", "Mod8"))
+
+filter(litters_data, pups_born_alive >= 4 , pups_born_alive <= 6) ## a range
+
+filter(litters_data, gd0_weight + gd18_weight < 70)
+
+# don't do this: filter(litters_data, !is.na(gd0_weight))
+drop_na(litters_data, gd0_weight)
+```
+
+
 
 
