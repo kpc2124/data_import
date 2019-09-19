@@ -16,6 +16,7 @@ library(readxl)
 
 ```{r}
 ## reads in a dataset (absolute (NO) vs relative (YES) paths)
+## read_csv brings dataset into a tibble, read.csv is more lax
 
 litters_data = read_csv(file = "./data/FAS_litters.csv")
 litters_data = janitor::clean_names(litters_data) ## rewriting dataset
@@ -59,4 +60,6 @@ mlb11_data = read_excel(path = "./data/mlb11.xlsx")
 ```{r}
 pulse_data = haven::read_sas("./data/public_pulse_data.sas7bdat")
 ```
+
+
 
