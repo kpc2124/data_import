@@ -80,7 +80,32 @@ bind_rows(fellowship_ring, two_towers, return_king) %>%
   select(movie, race, sex, words)
 ```
 
+## JOINS!
 
+```{r}
+pup_data = 
+  read_csv("./data/FAS_pups.csv", col_types = "ciiiii") %>%
+  janitor::clean_names() %>%
+  mutate(sex = recode(sex, `1` = "male", `2` = "female")) 
 
+litter_data = 
+  read_csv("./data/FAS_litters.csv", col_types = "ccddiiii") %>%
+  janitor::clean_names() %>%
+  select(-pups_survive) %>%
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group))
+```
 
+try to join these datasets
+
+```{r}
+## joins are difficult to reconcile with piping, just keep it separate
+
+fas_data = 
+    left_join(pup_data, litter_data, by = "litter_number") ## using left_join: what I care about is pup specific outcomes, so the pup dataset has all the variables I need. Use by to specify the unique "key" you are joining by.
+
+full_join(pup_data, litter_data, by = "litter_number") %>% 
+  filter(is.na(sex))
+```
 
