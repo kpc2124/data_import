@@ -1,0 +1,33 @@
+---
+title: "Tidy Data"
+author: "Kristi Chau"
+date: "9/24/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Wide to Long
+
+```{r}
+pulse_data = 
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names()
+  pivot_longer(
+    pulse_data,
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit", ## corresponds to column names
+    names_prefix = "bdi_score_",
+    values_to = "bdi" ## corresponds to values in the corresponding columns
+  ) %>%
+  mutate(
+    visit = recode(visit, "bl" = "00m")
+  )
+```
+
+
+

@@ -121,4 +121,33 @@ arrange(litters_data, desc(pups_born_alive))
 arrange(litters_data, pups_born_alive, gd0_weight) ## first sort by pups_born_alive, then within that, order by gd0_weight
 ```
 
+## pipe
+
+Create a collection of commands
+
+```{r}
+litters_data = 
+  read_csv("./data/FAS_litters.csv", col_types = "ccddiiii") %>%
+  janitor::clean_names() %>%
+  select(-pups_survive) %>%
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group)) %>% 
+  drop_na(wt_gain)
+```
+
+```{r, eval = FALSE}
+litters_data %>% view()
+
+litters_data %>% pull(gd0_weight) %>%  mean
+```
+
+Don't worry about this for now...
+```{r}
+read_csv("./data/FAS_litters.csv") %>% 
+  janitor::clean_names(dat = .) %>% 
+  select(.data = ., -pups_survive) %>% 
+  lm(gd0_weight ~ gd18_weight, data = .)
+```
+
 
